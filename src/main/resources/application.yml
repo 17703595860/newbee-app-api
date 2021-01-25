@@ -1,2 +1,36 @@
 server:
   port: 9002
+
+logging:
+  level:
+    com.study.maven.newbee: debug
+
+
+spring:
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://192.168.10.31:3306/newbee_mall_db_v2?useUnicode=true&serverTimezone=GMT%2B8&characterEncoding=utf8&autoReconnect=true&useSSL=false&allowMultiQueries=true
+    username: root
+    password: root
+    # hikari数据库连接池
+    hikari:
+      minimum-idle: 5           # 最小空闲连接数量
+      idle-timeout: 180000      # 空闲连接存活最大时间，默认600000（10分钟）
+      maximum-pool-size: 15      # 连接池最大连接数，默认是10
+      auto-commit: true         # 此属性控制从池返回的连接的默认自动提交行为,默认值：true
+      max-lifetime: 1800000     # 此属性控制池中连接的最长生命周期，值0表示无限生命周期，默认1800000即30分钟
+      connection-timeout: 30000  # 数据库连接超时时间,默认30秒，即30000
+      connection-test-query: SELECT 1 # 测试连接诶使用
+mybatis:
+  mapper-locations: classpath:/mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+  type-aliases-package: com.study.maven.newbee.entity
+
+mapper:
+  identity: MYSQL
+
+pagehelper:
+  helper-dialect: mysql
+  reasonable: true
