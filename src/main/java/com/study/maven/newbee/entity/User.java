@@ -4,33 +4,37 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import tk.mybatis.mapper.annotation.KeySql;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * @author HLH
  * @email 17703595860@163.com
- * @date : Created in  2021/1/25 22:42:28
+ * @date : Created in  2021/1/26 21:52:33
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "tb_newbee_mall_admin_user")
+@Table(name = "tz_newbee_mall_user")
 public class User implements Serializable {
 
-    private static final long serialVersionUID = 6915034159009175889L;
+    private static final long serialVersionUID = 8622935789737728500L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer adminUserId;
-    private String loginUserName;
-    private String loginPassword;
+    @KeySql(useGeneratedKeys = true)
+    private Long userId;
     private String nickName;
-    private Integer locked;
+    private String loginName;
+    private String passwordMd5;
+    private String introduceSign;
+    private boolean isDeleted;
+    private Boolean lockedFlag;
+    private Date createTime;
+
 
 }

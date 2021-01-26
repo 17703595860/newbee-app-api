@@ -8,5 +8,6 @@ import tk.mybatis.mapper.common.Mapper;
  * @email 17703595860@163.com
  * @date : Created in  2021/1/25 22:51:18
  */
+@org.apache.ibatis.annotations.Mapper
 public interface UserTokenMapper extends Mapper<UserToken> {
 }

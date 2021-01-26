@@ -30,6 +30,6 @@ public class UserToken implements Serializable {
     private Long UserId;
     private String token;
     private Date updateTime;
-    private String expireTime;
+    private Date expireTime;
 
 }
