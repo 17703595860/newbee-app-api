@@ -1,6 +1,7 @@
 package com.study.maven.newbee.mapper;
 
 import com.study.maven.newbee.entity.User;
+import org.springframework.stereotype.Repository;
 import tk.mybatis.mapper.common.Mapper;
 
 /**
@@ -8,7 +9,7 @@ import tk.mybatis.mapper.common.Mapper;
  * @email 17703595860@163.com
  * @date : Created in  2021/1/25 22:49:41
  */
-@org.apache.ibatis.annotations.Mapper
+@Repository
 public interface UserMapper extends Mapper<User> {
 
 
