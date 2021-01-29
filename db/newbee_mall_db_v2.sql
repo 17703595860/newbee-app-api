@@ -17,6 +17,10 @@
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 
+DROP DATABASE IF EXISTS newbee_mall_db_v2;
+CREATE DATABASE newbee_mall_db_v2;
+USE newbee_mall_db_v2;
+
 -- ----------------------------
 -- Table structure for tb_newbee_mall_admin_user
 -- ----------------------------
