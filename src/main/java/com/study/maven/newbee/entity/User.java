@@ -32,7 +32,7 @@ public class User implements Serializable {
     private String loginName;
     private String passwordMd5;
     private String introduceSign;
-    private boolean isDeleted;
+    private Boolean isDeleted;
     private Boolean lockedFlag;
     private Date createTime;
 

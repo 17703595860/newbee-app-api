@@ -2,14 +2,10 @@ package com.study.maven.newbee.config.handler;
 
 import com.study.maven.newbee.config.annotation.TokenToUser;
 import com.study.maven.newbee.entity.User;
-import com.study.maven.newbee.entity.UserToken;
-import com.study.maven.newbee.exception.AuthenticationException;
 import com.study.maven.newbee.mapper.UserMapper;
 import com.study.maven.newbee.mapper.UserTokenMapper;
-import com.study.maven.newbee.utils.JwtProperties;
+import com.study.maven.newbee.config.entity.JwtProperties;
 import com.study.maven.newbee.utils.JwtUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
@@ -17,10 +13,6 @@ import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
-import tk.mybatis.mapper.entity.Example;
-
-import java.time.LocalDateTime;
-import java.util.Date;
 
 /**
  * 方法参数解析器

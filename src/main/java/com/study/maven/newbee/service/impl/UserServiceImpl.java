@@ -6,7 +6,7 @@ import com.study.maven.newbee.exception.AuthenticationException;
 import com.study.maven.newbee.mapper.UserMapper;
 import com.study.maven.newbee.mapper.UserTokenMapper;
 import com.study.maven.newbee.service.UserService;
-import com.study.maven.newbee.utils.JwtProperties;
+import com.study.maven.newbee.config.entity.JwtProperties;
 import com.study.maven.newbee.utils.JwtUtils;
 import com.study.maven.newbee.utils.PayLoad;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -46,7 +46,7 @@ public class UserServiceImpl implements UserService {
         if (daoUser.getLockedFlag()) {
             throw new AuthenticationException("登录失败，账号已经被锁定");
         }
-        if (daoUser.isDeleted()) {
+        if (daoUser.getIsDeleted()) {
             throw new AuthenticationException("登录失败，账号已经被删除");
         }
         daoUser.setPasswordMd5(null);

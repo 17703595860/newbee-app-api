@@ -4,7 +4,7 @@ import com.study.maven.newbee.entity.User;
 import com.study.maven.newbee.entity.UserToken;
 import com.study.maven.newbee.exception.AuthenticationException;
 import com.study.maven.newbee.mapper.UserTokenMapper;
-import com.study.maven.newbee.utils.JwtProperties;
+import com.study.maven.newbee.config.entity.JwtProperties;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,16 +1,20 @@
 package com.study.maven.newbee.controller;
 
+import com.study.maven.newbee.base.controller.ResultGenerator;
 import com.study.maven.newbee.config.annotation.TokenToUser;
 import com.study.maven.newbee.entity.User;
+import com.study.maven.newbee.entity.UserToken;
+import com.study.maven.newbee.mapper.UserMapper;
+import com.study.maven.newbee.mapper.UserTokenMapper;
 import com.study.maven.newbee.service.UserService;
 import com.study.maven.newbee.vo.Result;
 import com.study.maven.newbee.vo.UserLoginParam;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.*;
+import io.swagger.models.Response;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,26 +30,63 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/api/user")
 @Slf4j
-@Api(value = "用户接口", tags = "用户接口1")
-public class UserController {
+@Api(tags = "用户接口")
+public class UserController implements ResultGenerator {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private UserMapper userMapper;
+    @Autowired
+    private UserTokenMapper userTokenMapper;
 
     @PostMapping("/login")
     @ApiOperation(value = "登录接口", notes = "")
     @ApiImplicitParam(name = "userLoginParam", required = true, value = "登录用户", dataType = "UserLoginParam")
-    private ResponseEntity<Result<String>> login(@RequestBody @Valid UserLoginParam userLoginParam) {
+    private ResponseEntity<Result<?>> login(@RequestBody @Valid UserLoginParam userLoginParam) {
         String token = userService.login(userLoginParam.getUsername(), userLoginParam.getPassword());
         if (StringUtils.isBlank(token)) {
-            return ResponseEntity.status(500).body(Result.<String>builder().resultCode(500).message("生成token失败").build());
+            return internalServererror("生成token失败");
         }
-        return ResponseEntity.ok(Result.<String>builder().data(token).build());
+        return success(token);
     }
 
-    @PostMapping("/test")
-    private ResponseEntity<Result<User>> test(@TokenToUser @ApiIgnore User user) {
-        return ResponseEntity.ok(Result.<User>builder().data(user).build());
+    @ApiOperation(value = "获取登录用户信息", notes = "")
+    @GetMapping("/info")
+    public ResponseEntity<Result<?>> findLoginUser(@TokenToUser @ApiIgnore User user) {
+        // 已登录，直接返回，因为没有记录密码，所以直接返回即可
+        return success(user);
+    }
+
+    @ApiOperation(value = "修改用户信息", notes = "")
+    @PutMapping("/info")
+    public ResponseEntity<Result<?>> updateUser(@RequestBody @ApiParam("要修改的用户信息") User updateUser, @TokenToUser @ApiIgnore User user) {
+        // 手机端，个人中心，只能设置自己的信息
+        updateUser.setUserId(user.getUserId());
+        // 如果修改的事密码，加密
+        if (updateUser.getPasswordMd5() != null){
+            updateUser.setPasswordMd5(DigestUtils.md5Hex(updateUser.getPasswordMd5()));
+        }
+        // 去除不允许修改的项
+        updateUser.setCreateTime(null);
+        updateUser.setIsDeleted(null);
+        updateUser.setLockedFlag(null);
+
+        int flag = userMapper.updateByPrimaryKeySelective(updateUser);
+        if (flag == 1) {
+            return success();
+        }
+        return internalServererror("修改个人信息失败");
+    }
+
+    @PostMapping("/logout")
+    @ApiOperation(value = "退出接口", notes = "清除token")
+    public ResponseEntity<Result<?>> logout(@TokenToUser @ApiIgnore User user) {
+        int flag = userTokenMapper.deleteByPrimaryKey(user.getUserId());
+        if (flag == 1) {
+            return success();
+        }
+        return internalServererror("退出错误");
     }
 
 }

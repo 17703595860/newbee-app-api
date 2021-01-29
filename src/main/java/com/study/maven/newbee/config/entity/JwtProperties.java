@@ -1,5 +1,6 @@
-package com.study.maven.newbee.utils;
+package com.study.maven.newbee.config.entity;
 
+import com.study.maven.newbee.utils.RsaUtils;
 import lombok.Data;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
