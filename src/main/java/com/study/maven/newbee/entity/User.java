@@ -20,7 +20,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "tz_newbee_mall_user")
+@Table(name = "tb_newbee_mall_user")
 public class User implements Serializable {
 
     private static final long serialVersionUID = 8622935789737728500L;

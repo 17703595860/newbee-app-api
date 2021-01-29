@@ -981,7 +981,7 @@ CREATE TABLE `tb_newbee_mall_user_address`  (
 DROP TABLE IF EXISTS `tb_newbee_mall_user_token`;
 CREATE TABLE `tb_newbee_mall_user_token`  (
   `user_id` bigint(0) NOT NULL COMMENT '用户主键id',
-  `token` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'token值(32位字符串)',
+  `token` varchar(1000) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'token值(1000位字符串,使用jwt token，太长了)',
   `update_time` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '修改时间',
   `expire_time` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT 'token过期时间',
   PRIMARY KEY (`user_id`) USING BTREE,

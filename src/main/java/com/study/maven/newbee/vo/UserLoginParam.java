@@ -19,7 +19,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ApiModel("登录传参对象")
+@ApiModel(description = "登录对象")
 public class UserLoginParam implements Serializable {
 
     private static final long serialVersionUID = -7467158830861216351L;
@@ -27,6 +27,7 @@ public class UserLoginParam implements Serializable {
     @ApiModelProperty("登录名")
     @NotNull(message = "用户名不能为空")
     private String username;
+    @ApiModelProperty("密码")
     @NotNull(message = "密码不能为空")
     private String password;
 

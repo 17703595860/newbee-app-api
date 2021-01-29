@@ -11,13 +11,13 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
  * @email 17703595860@163.com
  * @date : Created in  2021/1/26 21:39:23
  */
-//@RestControllerAdvice
+@RestControllerAdvice
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(AuthenticationException.class)
-    private ResponseEntity<Result<?>> AuthenticationHandler(AuthenticationException e) {
+    private ResponseEntity<Result<String>> AuthenticationHandler(AuthenticationException e) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
-                Result.builder().resultCode(e.getCode()).message(e.getMessage()).build()
+                Result.<String>builder().resultCode(e.getCode()).message(e.getMessage()).build()
         );
     }
 

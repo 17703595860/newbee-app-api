@@ -4,15 +4,14 @@ import com.study.maven.newbee.service.UserService;
 import com.study.maven.newbee.vo.Result;
 import com.study.maven.newbee.vo.UserLoginParam;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -32,7 +31,8 @@ public class UserController {
 
     @PostMapping("/login")
     @ApiOperation(value = "登录接口", notes = "")
-    private ResponseEntity<Result<String>> login(@RequestParam @Valid UserLoginParam userLoginParam) {
+    @ApiImplicitParam(name = "userLoginParam", required = true, value = "登录用户", dataType = "UserLoginParam")
+    private ResponseEntity<Result<String>> login(@RequestBody @Valid UserLoginParam userLoginParam) {
         String token = userService.login(userLoginParam.getUsername(), userLoginParam.getPassword());
         if (StringUtils.isBlank(token)) {
             return ResponseEntity.status(500).body(Result.<String>builder().resultCode(500).message("生成token失败").build());

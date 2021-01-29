@@ -18,7 +18,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ApiModel("返回对象")
+@ApiModel(description = "统一返回结果对象")
 public class Result<T> implements Serializable {
 
     private static final long serialVersionUID = -5303708196097223305L;

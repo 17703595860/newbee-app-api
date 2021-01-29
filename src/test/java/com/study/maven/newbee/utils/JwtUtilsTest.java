@@ -1,6 +1,7 @@
 package com.study.maven.newbee.utils;
 
 import com.study.maven.newbee.entity.User;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,4 +37,11 @@ public class JwtUtilsTest {
         PayLoad payLoad = JwtUtils.getInfoFromToken(token, jwtProperties.getPublicKey());
         System.out.println(payLoad.getUser());
     }
+
+    @Test
+    public void md5Password() {
+        String md5Pwd = DigestUtils.md5Hex("123");
+        System.out.println(md5Pwd);
+    }
+
 }

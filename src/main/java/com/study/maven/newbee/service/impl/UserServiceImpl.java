@@ -35,12 +35,12 @@ public class UserServiceImpl implements UserService {
     public String login(String username, String password) {
         Example example = new Example(User.class);
         Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("loginName", "userName");
+        criteria.andEqualTo("loginName", username);
         User daoUser = userMapper.selectOneByExample(example);
         if (daoUser == null) {
             throw new AuthenticationException("登录失败，用户名不存在");
         }
-        if (StringUtils.equals(daoUser.getPasswordMd5(), DigestUtils.md5Hex(password))) {
+        if (!StringUtils.equals(daoUser.getPasswordMd5(), DigestUtils.md5Hex(password))) {
             throw new AuthenticationException("登录失败，密码错误");
         }
         if (daoUser.getLockedFlag()) {
