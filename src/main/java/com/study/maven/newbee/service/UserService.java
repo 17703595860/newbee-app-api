@@ -7,6 +7,12 @@ package com.study.maven.newbee.service;
  */
 public interface UserService {
 
+    /**
+     * 登录，根据用户名密码登录，返回token
+     * @param username 用户名
+     * @param password 密码
+     * @return String 返回Token
+     */
     String login(String username, String password);
 
 }

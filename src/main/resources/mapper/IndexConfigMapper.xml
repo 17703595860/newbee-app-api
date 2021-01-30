@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.study.maven.newbee.mapper.IndexConfigMapper">
+
+    <!-- 使用别名，比用单独再写映射规则 -->
+    <select id="selectIndexGoodsVOListByTypeAndNumDesc" parameterType="Integer" resultType="com.study.maven.newbee.vo.IndexGoodsVO">
+        select
+            a.goods_id goodsId, b.goods_name goodsName, b.goods_cover_img goodsCoverImg,
+            a.redirect_url redirectUrl, b.original_price originalPrice, b.selling_price sellingPrice
+        from
+             tb_newbee_mall_index_config a
+        left join
+            tb_newbee_mall_goods_info b
+        on
+            a.goods_id = b.goods_id
+        where
+            a.is_deleted = 0 and b.goods_sell_status = 1 and a.config_type = #{configType}
+        limit #{num}
+    </select>
+
+</mapper>

@@ -12,6 +12,7 @@ import javax.persistence.Table;
 import java.io.Serializable;
 
 /**
+ * 管理用户表
  * @author HLH
  * @email 17703595860@163.com
  * @date : Created in  2021/1/25 22:42:28

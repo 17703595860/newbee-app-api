@@ -1,5 +1,7 @@
 package com.study.maven.newbee.utils;
 
+import com.study.maven.newbee.base.BaseTest;
+import com.study.maven.newbee.config.entity.JwtProperties;
 import com.study.maven.newbee.entity.User;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.junit.Test;
@@ -17,9 +19,7 @@ import static org.junit.Assert.*;
  * @email 17703595860@163.com
  * @date : Created in  2021/1/26 22:43:43
  */
-@SpringBootTest
-@RunWith(SpringRunner.class)
-public class JwtUtilsTest {
+public class JwtUtilsTest extends BaseTest {
 
     @Autowired
     private JwtProperties jwtProperties;

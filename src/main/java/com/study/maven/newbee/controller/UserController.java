@@ -3,18 +3,15 @@ package com.study.maven.newbee.controller;
 import com.study.maven.newbee.base.controller.ResultGenerator;
 import com.study.maven.newbee.config.annotation.TokenToUser;
 import com.study.maven.newbee.entity.User;
-import com.study.maven.newbee.entity.UserToken;
 import com.study.maven.newbee.mapper.UserMapper;
 import com.study.maven.newbee.mapper.UserTokenMapper;
 import com.study.maven.newbee.service.UserService;
 import com.study.maven.newbee.vo.Result;
-import com.study.maven.newbee.vo.UserLoginParam;
+import com.study.maven.newbee.vo.UserLoginParamVO;
 import io.swagger.annotations.*;
-import io.swagger.models.Response;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -42,9 +39,9 @@ public class UserController implements ResultGenerator {
 
     @PostMapping("/login")
     @ApiOperation(value = "登录接口", notes = "")
-    @ApiImplicitParam(name = "userLoginParam", required = true, value = "登录用户", dataType = "UserLoginParam")
-    private ResponseEntity<Result<?>> login(@RequestBody @Valid UserLoginParam userLoginParam) {
-        String token = userService.login(userLoginParam.getUsername(), userLoginParam.getPassword());
+//    @ApiImplicitParam(name = "userLoginParamVO", required = true, value = "登录用户", dataType = "UserLoginParamVO")
+    private ResponseEntity<Result<?>> login(@RequestBody @Valid @ApiParam("要登录的用户信息") UserLoginParamVO userLoginParamVO) {
+        String token = userService.login(userLoginParamVO.getUsername(), userLoginParamVO.getPassword());
         if (StringUtils.isBlank(token)) {
             return internalServererror("生成token失败");
         }

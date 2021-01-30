@@ -20,7 +20,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @Builder
 @ApiModel(description = "登录对象")
-public class UserLoginParam implements Serializable {
+public class UserLoginParamVO implements Serializable {
 
     private static final long serialVersionUID = -7467158830861216351L;
 

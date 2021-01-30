@@ -22,6 +22,9 @@ spring:
       max-lifetime: 1800000     # 此属性控制池中连接的最长生命周期，值0表示无限生命周期，默认1800000即30分钟
       connection-timeout: 30000  # 数据库连接超时时间,默认30秒，即30000
       connection-test-query: SELECT 1 # 测试连接诶使用
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+
 mybatis:
   mapper-locations: classpath:/mapper/*.xml
   configuration:
@@ -35,6 +38,7 @@ pagehelper:
   helper-dialect: mysql
   reasonable: true
 
+# jwt Token
 jwt:
   secret: test@Login(Auth}*^31)&test% # 登录校验的密钥
   pubKeyPath: D:\\rsa\\rsa.pub # 公钥地址
@@ -52,3 +56,7 @@ login:
     - /swagger-ui/**
     - /webjars/springfox-swagger-ui/**
     - /swagger-resources/**
+
+# 常量类
+constants:
+  index-num: 6

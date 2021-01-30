@@ -51,6 +51,9 @@ public class LoginHandlerInterceptor implements HandlerInterceptor {
         }
         // 如果token有效，刷新token
         DateTime expire = now.plusMinutes(jwtProperties.getExpire());
+        userToken.setUpdateTime(now.toDate());
+        userToken.setExpireTime(expire.toDate());
+        userTokenMapper.updateByPrimaryKeySelective(userToken);
         return true;
     }
 }

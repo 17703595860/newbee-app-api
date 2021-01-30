@@ -1,5 +1,6 @@
 package com.study.maven.newbee.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,6 +13,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
+ * 前台用户表
  * @author HLH
  * @email 17703595860@163.com
  * @date : Created in  2021/1/26 21:52:33
@@ -27,14 +29,14 @@ public class User implements Serializable {
 
     @Id
     @KeySql(useGeneratedKeys = true)
-    private Long userId;
-    private String nickName;
-    private String loginName;
-    private String passwordMd5;
-    private String introduceSign;
-    private Boolean isDeleted;
-    private Boolean lockedFlag;
-    private Date createTime;
+    private Long userId;            // 用户id
+    private String nickName;        // 用户昵称
+    private String loginName;       // 登录名
+    private String passwordMd5;     // 密码
+    private String introduceSign;   // 个性签名
+    private Boolean isDeleted;      // 是否删除
+    private Boolean lockedFlag;     // 是否锁定
+    private Date createTime;        // 创建时间
 
 
 }
