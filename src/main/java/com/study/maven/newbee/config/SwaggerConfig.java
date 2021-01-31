@@ -1,5 +1,7 @@
 package com.study.maven.newbee.config;
 
+import com.study.maven.newbee.config.entity.Constants;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -26,13 +28,16 @@ import java.util.ArrayList;
 @EnableSwagger2
 public class SwaggerConfig {
 
+    @Autowired
+    private Constants constants;
+
     @Bean
     public Docket api() {
 
         // 记录token
         // 创建一个swagger变量
         Parameter tokenParameter = new ParameterBuilder()
-                .name("Authentication").description("用户认证token")
+                .name(constants.getTokenHeaderName()).description("用户认证token")
                 .modelRef(new ModelRef("String")).parameterType("header")
                 .required(false).build();
 

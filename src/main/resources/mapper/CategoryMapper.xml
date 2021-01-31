@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.study.maven.newbee.mapper.CategoryMapper">
+
+    <resultMap id="categoriesMap" type="com.study.maven.newbee.vo.CategoryVO">
+        <id property="categoryId" column="categoryId1"/>
+        <result property="categoryLevel" column="categoryLevel1" />
+        <result property="parentId" column="parentId1" />
+        <result property="categoryName" column="categoryName1" />
+        <result property="categoryRank" column="categoryRank1" />
+        <collection property="children" ofType="com.study.maven.newbee.vo.CategoryVO">
+            <id property="categoryId" column="categoryId2"/>
+            <result property="categoryLevel" column="categoryLevel2" />
+            <result property="parentId" column="parentId2" />
+            <result property="categoryName" column="categoryName2" />
+            <result property="categoryRank" column="categoryRank2" />
+            <collection property="children" ofType="com.study.maven.newbee.vo.CategoryVO">
+                <id property="categoryId" column="categoryId3"/>
+                <result property="categoryLevel" column="categoryLevel3" />
+                <result property="parentId" column="parentId3" />
+                <result property="categoryName" column="categoryName3" />
+                <result property="categoryRank" column="categoryRank3" />
+            </collection>
+        </collection>
+    </resultMap>
+
+    <select id="selectAllCategory" resultMap="categoriesMap">
+        select
+            a.category_id categoryId1, a.category_level categoryLevel1, a.parent_id parentId1, a.category_name categoryName1, a.category_rank categoryRank1,
+            b.category_id categoryId2, b.category_level categoryLevel2, b.parent_id parentId2, b.category_name categoryName2, b.category_rank categoryRank2,
+            c.category_id categoryId3, c.category_level categoryLevel3, c.parent_id parentId3, c.category_name categoryName3, c.category_rank categoryRank3
+        from
+            tb_newbee_mall_goods_category a
+        left join
+            tb_newbee_mall_goods_category b on b.parent_id = a.category_id
+        left join
+            tb_newbee_mall_goods_category c on c.parent_id = b.category_id
+        where
+            a.parent_id = 0 and a.is_deleted = 0 and b.is_deleted = 0 and c.is_deleted = 0
+        order by
+            a.category_rank desc, b.category_rank desc, c.category_rank desc
+    </select>
+
+</mapper>

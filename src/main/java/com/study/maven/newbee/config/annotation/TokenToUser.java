@@ -16,6 +16,4 @@ import java.lang.annotation.*;
 @Documented
 public @interface TokenToUser {
 
-    String value() default "user";
-
 }

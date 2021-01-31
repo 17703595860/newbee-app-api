@@ -1,6 +1,7 @@
 package com.study.maven.newbee.config.handler;
 
 import com.study.maven.newbee.config.annotation.TokenToUser;
+import com.study.maven.newbee.config.entity.Constants;
 import com.study.maven.newbee.entity.User;
 import com.study.maven.newbee.mapper.UserMapper;
 import com.study.maven.newbee.mapper.UserTokenMapper;
@@ -27,11 +28,9 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 public class TokenToUserMethodArgumentResolver implements HandlerMethodArgumentResolver {
 
     @Autowired
-    private UserMapper userMapper;
-    @Autowired
-    private UserTokenMapper userTokenMapper;
-    @Autowired
     private JwtProperties jwtProperties;
+    @Autowired
+    private Constants constants;
 
     /**
      * 判断是否要进行增强
@@ -40,10 +39,7 @@ public class TokenToUserMethodArgumentResolver implements HandlerMethodArgumentR
      */
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
-        if (parameter.hasParameterAnnotation(TokenToUser.class)) {
-            return true;
-        }
-        return false;
+        return parameter.hasParameterAnnotation(TokenToUser.class);
     }
 
     /**
@@ -58,10 +54,9 @@ public class TokenToUserMethodArgumentResolver implements HandlerMethodArgumentR
     @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
         if (parameter.getParameterAnnotation(TokenToUser.class) != null) {
-            String token = webRequest.getHeader("Authentication");
+            String token = webRequest.getHeader(constants.getTokenHeaderName());
             // 获取user
-            User user = JwtUtils.getInfoFromToken(token, jwtProperties.getPublicKey()).getUser();
-            return user;
+            return JwtUtils.getInfoFromToken(token, jwtProperties.getPublicKey()).getUser();
         }
         return null;
     }

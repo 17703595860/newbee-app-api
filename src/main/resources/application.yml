@@ -60,3 +60,6 @@ login:
 # 常量类
 constants:
   index-num: 6
+  page-size: 10
+  current-page: 1
+  token-header-name: 'Authorization'

@@ -1,17 +1,23 @@
 package com.study.maven.newbee.config;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.study.maven.newbee.config.entity.JwtProperties;
 import com.study.maven.newbee.config.entity.LoginProperties;
+import com.study.maven.newbee.config.handler.CurrentPageMethodArgumentResolver;
+import com.study.maven.newbee.config.handler.PageSizeMethodArgumentResolver;
 import com.study.maven.newbee.config.handler.TokenToUserMethodArgumentResolver;
 import com.study.maven.newbee.config.interceptor.LoginHandlerInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import javax.annotation.PostConstruct;
 import java.util.List;
 
 /**
@@ -28,7 +34,22 @@ public class AppConfig implements WebMvcConfigurer {
     @Autowired
     private TokenToUserMethodArgumentResolver tokenToUserMethodArgumentResolver;
     @Autowired
+    private PageSizeMethodArgumentResolver pageSizeMethodArgumentResolver;
+    @Autowired
+    private CurrentPageMethodArgumentResolver currentPageMethodArgumentResolver;
+    @Autowired
     private LoginProperties loginProperties;
+    @Autowired
+    private ObjectMapper objectMapper;
+
+    /**
+     * 修改全局ObjectMapper配置 jackson
+     *      取消null字段的序列化
+     */
+    @PostConstruct
+    public void objectMapper() {
+        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+    }
 
     /**
      * 添加登录拦截器
@@ -47,5 +68,9 @@ public class AppConfig implements WebMvcConfigurer {
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
         resolvers.add(tokenToUserMethodArgumentResolver);
+        resolvers.add(pageSizeMethodArgumentResolver);
+        resolvers.add(currentPageMethodArgumentResolver);
     }
+
+
 }

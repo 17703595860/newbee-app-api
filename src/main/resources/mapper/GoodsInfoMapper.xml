@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.study.maven.newbee.mapper.GoodsInfoMapper">
+
+    <select id="selectGoodsByPage" resultType="com.study.maven.newbee.vo.IndexGoodsVO">
+        select
+            goods_id goodsId, goods_name goodsName, goods_cover_img goodsCoverImg,
+            original_price originalPrice, selling_price sellingPrice
+        from
+            tb_newbee_mall_goods_info
+        <where>
+            <if test="keyword != null and keyword.length != 0">
+                goods_name = #{keyword}
+            </if>
+            <if test="categoryId != null and categoryId != 0">
+                and goods_category_id = #{categoryId}
+            </if>
+        </where>
+        <if test="orderBy != null and orderBy.length != 0">
+            order by
+            <choose>
+                <when test='orderBy == "price"'>
+                    selling_price
+                </when>
+                <when test='orderBy == "new"'>
+                    create_time
+                </when>
+                <otherwise>
+                    goods_id
+                </otherwise>
+            </choose>
+            <if test="not order">
+                desc
+            </if>
+        </if>
+    </select>
+
+</mapper>

@@ -1,5 +1,6 @@
 package com.study.maven.newbee.config.interceptor;
 
+import com.study.maven.newbee.config.entity.Constants;
 import com.study.maven.newbee.entity.User;
 import com.study.maven.newbee.entity.UserToken;
 import com.study.maven.newbee.exception.AuthenticationException;
@@ -29,11 +30,13 @@ public class LoginHandlerInterceptor implements HandlerInterceptor {
     private UserTokenMapper userTokenMapper;
     @Autowired
     private JwtProperties jwtProperties;
+    @Autowired
+    private Constants constants;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         User user = null;
-        String token = request.getHeader("Authentication");
+        String token = request.getHeader(constants.getTokenHeaderName());
         if (StringUtils.isBlank(token)){
             throw new AuthenticationException("token传递错误");
         }

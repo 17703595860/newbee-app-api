@@ -19,5 +19,8 @@ public class Constants implements Serializable {
     private static final long serialVersionUID = 3970888012939203719L;
 
     private Integer indexNum;
+    private Integer pageSize;
+    private Integer currentPage;
+    private String tokenHeaderName;
 
 }
