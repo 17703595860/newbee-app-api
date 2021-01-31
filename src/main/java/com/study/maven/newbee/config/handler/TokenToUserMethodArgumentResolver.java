@@ -3,6 +3,8 @@ package com.study.maven.newbee.config.handler;
 import com.study.maven.newbee.config.annotation.TokenToUser;
 import com.study.maven.newbee.config.entity.Constants;
 import com.study.maven.newbee.entity.User;
+import com.study.maven.newbee.entity.UserToken;
+import com.study.maven.newbee.exception.AuthenticationException;
 import com.study.maven.newbee.mapper.UserMapper;
 import com.study.maven.newbee.mapper.UserTokenMapper;
 import com.study.maven.newbee.config.entity.JwtProperties;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
+import tk.mybatis.mapper.entity.Example;
 
 /**
  * 方法参数解析器
@@ -29,6 +32,8 @@ public class TokenToUserMethodArgumentResolver implements HandlerMethodArgumentR
 
     @Autowired
     private JwtProperties jwtProperties;
+    @Autowired
+    private UserTokenMapper userTokenMapper;
     @Autowired
     private Constants constants;
 
@@ -56,7 +61,17 @@ public class TokenToUserMethodArgumentResolver implements HandlerMethodArgumentR
         if (parameter.getParameterAnnotation(TokenToUser.class) != null) {
             String token = webRequest.getHeader(constants.getTokenHeaderName());
             // 获取user
-            return JwtUtils.getInfoFromToken(token, jwtProperties.getPublicKey()).getUser();
+            User user = null;
+            try {
+                user = JwtUtils.getInfoFromToken(token, jwtProperties.getPublicKey()).getUser();
+            } catch (Exception e) {
+                // 删除token
+                Example example = new Example(UserToken.class);
+                example.createCriteria().andEqualTo("token", token);
+                userTokenMapper.deleteByExample(example);
+                throw new AuthenticationException("Token解析错误，请重新登录");
+            }
+            return user;
         }
         return null;
     }

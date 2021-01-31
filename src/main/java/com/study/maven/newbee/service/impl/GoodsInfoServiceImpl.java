@@ -35,8 +35,8 @@ public class GoodsInfoServiceImpl implements GoodsInfoService {
     @Override
     public PageResult<IndexGoodsVO> searchGoods(String keyword, Long categoryId, Integer pageSize, Integer currentPage, String orderBy, Boolean order) {
        // 分页参数判断
-        pageSize = pageSize == null || pageSize == 0 ? constants.getPageSize() : pageSize;
-        currentPage = currentPage == null || currentPage == 0 ? constants.getCurrentPage() : currentPage;
+        pageSize = pageSize == null || pageSize < 1 ? constants.getPageSize() : pageSize;
+        currentPage = currentPage == null || currentPage < 1 ? constants.getCurrentPage() : currentPage;
         // 查询 分页
         PageHelper.startPage(currentPage, pageSize);
         List<IndexGoodsVO> goodsVOList = goodsInfoMapper.selectGoodsByPage(keyword, categoryId, orderBy, order);

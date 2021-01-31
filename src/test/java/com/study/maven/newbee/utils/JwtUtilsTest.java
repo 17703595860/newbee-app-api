@@ -4,12 +4,14 @@ import com.study.maven.newbee.base.BaseTest;
 import com.study.maven.newbee.config.entity.JwtProperties;
 import com.study.maven.newbee.entity.User;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import static org.junit.Assert.*;
@@ -42,6 +44,18 @@ public class JwtUtilsTest extends BaseTest {
     public void md5Password() {
         String md5Pwd = DigestUtils.md5Hex("123");
         System.out.println(md5Pwd);
+    }
+
+    @Test
+    public void jwtProperties() {
+        System.out.println(jwtProperties);
+    }
+
+    @Test
+    public void JodaTest() {
+        DateTime dateTime = DateTime.now().plusMinutes(30);
+        System.out.println(dateTime);
+        System.out.println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(dateTime.toDate()));
     }
 
 }

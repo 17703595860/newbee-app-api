@@ -2,6 +2,7 @@ package com.study.maven.newbee.config.entity;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
@@ -18,9 +19,11 @@ import java.io.Serializable;
 public class Constants implements Serializable {
     private static final long serialVersionUID = 3970888012939203719L;
 
+    private String tokenHeaderName;
     private Integer indexNum;
     private Integer pageSize;
     private Integer currentPage;
-    private String tokenHeaderName;
+    private Integer cartPageSize;
+    private Integer cartCurrentPage;
 
 }

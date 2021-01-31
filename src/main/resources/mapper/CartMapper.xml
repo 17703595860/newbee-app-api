@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.study.maven.newbee.mapper.CartMapper">
+
+    <select id="selectAllByUserId" resultType="com.study.maven.newbee.vo.CartVO">
+        select
+            a.cart_item_id, a.user_id, a.goods_id, a.goods_count,
+            b.goods_name, b.goods_cover_img, b.original_price, b.selling_price, b.goods_sell_status
+        from
+            tb_newbee_mall_shopping_cart_item a
+        left join
+            tb_newbee_mall_goods_info b
+        on
+            a.goods_id = b.goods_id
+        where
+            user_id = #{userId} and is_deleted = 0
+    </select>
+
+    <sql id="cartField">
+        cart_item_id, user_id, goods_id, goods_count, is_deleted, create_time, update_time
+    </sql>
+
+    <select id="selectByGoodsIdAndUserId" resultType="com.study.maven.newbee.entity.Cart">
+        select
+            <include refid="cartField"/>
+        from
+            tb_newbee_mall_shopping_cart_item
+        where
+            user_id = #{userId} and goods_id = #{goodsId}
+    </select>
+
+    <select id="selectCountByUserId" resultType="java.lang.Long">
+        select
+            count(cart_item_id)
+        from
+            tb_newbee_mall_shopping_cart_item
+        where
+            user_id = #{userId} and is_deleted = 0
+    </select>
+
+    <select id="selectOneByUserIdAndCartId" resultType="com.study.maven.newbee.entity.Cart">
+        select
+            cart_item_id, user_id, goods_id, goods_count, is_deleted, create_time, update_time
+        from
+            tb_newbee_mall_shopping_cart_item
+        where
+            cart_item_id = #{cartItemId} and user_id = #{userId}
+    </select>
+
+    <delete id="deleteCart">
+        delete from
+            tb_newbee_mall_shopping_cart_item
+        where
+            cart_item_id = #{id} and user_id = #{userId}
+    </delete>
+
+    <delete id="clearCart">
+        delete from
+            tb_newbee_mall_shopping_cart_item
+        where
+            user_id = #{userId}
+    </delete>
+
+</mapper>

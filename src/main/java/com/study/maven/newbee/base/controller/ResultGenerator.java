@@ -33,58 +33,58 @@ public interface ResultGenerator {
 
     /** 401 */
     default ResponseEntity<Result<?>> unauthorized() {
-        return ResponseEntity.ok(
-                Result.builder().message(HttpStatus.UNAUTHORIZED.getReasonPhrase()).build()
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
+                Result.builder().resultCode(HttpStatus.UNAUTHORIZED.value()).message(HttpStatus.UNAUTHORIZED.getReasonPhrase()).build()
         );
     }
 
     default ResponseEntity<Result<?>> unauthorized(String message) {
-        return ResponseEntity.ok(
-                Result.builder().message(message).build()
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
+                Result.builder().resultCode(HttpStatus.UNAUTHORIZED.value()).message(message).build()
         );
     }
 
     default ResponseEntity<Result<?>> unauthorized(String message, Object data) {
-        return ResponseEntity.ok(
-                Result.builder().message(HttpStatus.UNAUTHORIZED.getReasonPhrase()).message(message).data(data).build()
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
+                Result.builder().resultCode(HttpStatus.UNAUTHORIZED.value()).message(HttpStatus.UNAUTHORIZED.getReasonPhrase()).message(message).data(data).build()
         );
     }
 
     /** 404 */
     default ResponseEntity<Result<?>> notFound() {
-        return ResponseEntity.ok(
-                Result.builder().message(HttpStatus.NOT_FOUND.getReasonPhrase()).build()
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                Result.builder().resultCode(HttpStatus.NOT_FOUND.value()).message(HttpStatus.NOT_FOUND.getReasonPhrase()).build()
         );
     }
 
     default ResponseEntity<Result<?>> notFound(String message) {
-        return ResponseEntity.ok(
-                Result.builder().message(message).build()
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                Result.builder().resultCode(HttpStatus.NOT_FOUND.value()).message(message).build()
         );
     }
 
     default ResponseEntity<Result<?>> notFound(String message, Object data) {
-        return ResponseEntity.ok(
-                Result.builder().message(HttpStatus.NOT_FOUND.getReasonPhrase()).message(message).data(data).build()
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                Result.builder().resultCode(HttpStatus.NOT_FOUND.value()).message(HttpStatus.NOT_FOUND.getReasonPhrase()).message(message).data(data).build()
         );
     }
 
     /** 500 */
     default ResponseEntity<Result<?>> internalServererror() {
-        return ResponseEntity.ok(
-                Result.builder().message(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase()).build()
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+                Result.builder().resultCode(HttpStatus.INTERNAL_SERVER_ERROR.value()).message(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase()).build()
         );
     }
 
     default ResponseEntity<Result<?>> internalServererror(String message) {
-        return ResponseEntity.ok(
-                Result.builder().message(message).build()
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+                Result.builder().resultCode(HttpStatus.INTERNAL_SERVER_ERROR.value()).message(message).build()
         );
     }
 
     default ResponseEntity<Result<?>> internalServererror(String message, Object data) {
-        return ResponseEntity.ok(
-                Result.builder().message(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase()).message(message).data(data).build()
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+                Result.builder().resultCode(HttpStatus.INTERNAL_SERVER_ERROR.value()).message(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase()).message(message).data(data).build()
         );
     }
 

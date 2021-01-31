@@ -43,7 +43,7 @@ jwt:
   secret: test@Login(Auth}*^31)&test% # 登录校验的密钥
   pubKeyPath: D:\\rsa\\rsa.pub # 公钥地址
   priKeyPath: D:\\rsa\\rsa.pri # 私钥地址
-  expire: 30 # 过期时间,单位分钟
+  expire:  1440 # 过期时间,单位分钟 因为不支持刷新，给1天
 
 login:
   login-release:
@@ -59,7 +59,13 @@ login:
 
 # 常量类
 constants:
+  # token 请求头名字
+  token-header-name: 'Authorization'
+  # 首页每个模块展示商品个数
   index-num: 6
+  # 商品页面默认分页参数
   page-size: 10
   current-page: 1
-  token-header-name: 'Authorization'
+  # 购物车页面默认分页参数
+  cart-page-size: 10
+  cart-current-page: 1

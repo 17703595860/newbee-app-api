@@ -9,7 +9,6 @@ import lombok.*;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-@Builder
 public class AuthenticationException extends RuntimeException {
 
     private final int code = 401;
