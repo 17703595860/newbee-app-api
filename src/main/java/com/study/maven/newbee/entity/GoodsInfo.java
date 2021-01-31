@@ -33,7 +33,7 @@ public class GoodsInfo implements Serializable {
     private String goodsIntro;      // 商品简介
     private Long goodsCategoryId;   // 商品分类id
     private String goodsCoverImg;   // 商品主图
-    private String goodsCarousel;   // 商品轮播图
+    private String goodsCarousel;   // 商品图片集合，用逗号分割
     private String goodsDetailContent;  // 商品详情
     private Integer originalPrice;   // 商品价格
     private Integer sellingPrice;   // 商品实际价格
@@ -43,6 +43,6 @@ public class GoodsInfo implements Serializable {
     private Integer createUser;         // 创建人
     private Date createTime;            // 创建时间
     private Integer updateUser;         // 更新人
-    private Integer updateTime;         // 更新时间
+    private Date updateTime;         // 更新时间
 
 }

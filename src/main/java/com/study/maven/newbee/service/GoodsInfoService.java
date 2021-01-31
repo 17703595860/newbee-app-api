@@ -1,5 +1,6 @@
 package com.study.maven.newbee.service;
 
+import com.study.maven.newbee.vo.GoodsDetailVO;
 import com.study.maven.newbee.vo.IndexGoodsVO;
 import com.study.maven.newbee.vo.PageResult;
 
@@ -21,4 +22,11 @@ public interface GoodsInfoService {
      * @return 查询的结果
      */
     PageResult<IndexGoodsVO> searchGoods(String keyword, Long categoryId, Integer pageSize, Integer currentPage, String orderBy, Boolean order);
+
+    /**
+     * 根据id获取商品详情数据
+     * @param id 商品id
+     * @return 商品详情VO对象
+     */
+    GoodsDetailVO getGoodsDetailVOById(Long id);
 }

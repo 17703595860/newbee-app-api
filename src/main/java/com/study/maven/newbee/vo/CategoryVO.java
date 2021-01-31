@@ -21,7 +21,6 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @ApiModel("三级分类VO")
-@JsonInclude(JsonInclude.Include.NON_NULL)
 public class CategoryVO implements Serializable {
     private static final long serialVersionUID = -1864142053864231153L;
 

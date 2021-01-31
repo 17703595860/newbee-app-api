@@ -5,6 +5,7 @@ import com.study.maven.newbee.config.annotation.CurrentPage;
 import com.study.maven.newbee.config.annotation.PageSize;
 import com.study.maven.newbee.config.entity.Constants;
 import com.study.maven.newbee.service.GoodsInfoService;
+import com.study.maven.newbee.vo.GoodsDetailVO;
 import com.study.maven.newbee.vo.IndexGoodsVO;
 import com.study.maven.newbee.vo.PageResult;
 import com.study.maven.newbee.vo.Result;
@@ -12,10 +13,7 @@ import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.CollectionUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -53,6 +51,16 @@ public class GoodsInfoController implements ResultGenerator {
             return notFound();
         }
         return success(pageResult);
+    }
+
+    @GetMapping("/detail/{id}")
+    @ApiOperation("商品详情接口")
+    public ResponseEntity<Result<?>> getGoodsDetail(@PathVariable @ApiParam("商品id") Long id) {
+        GoodsDetailVO goodsDetailVO = goodsInfoService.getGoodsDetailVOById(id);
+        if (goodsDetailVO == null) {
+            return notFound();
+        }
+        return success(goodsDetailVO);
     }
 
 }
