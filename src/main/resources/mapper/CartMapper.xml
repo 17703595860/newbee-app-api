@@ -47,18 +47,22 @@
             cart_item_id = #{cartItemId} and user_id = #{userId}
     </select>
 
-    <delete id="deleteCart">
-        delete from
+    <update id="deleteCart">
+        update
             tb_newbee_mall_shopping_cart_item
+        set
+            is_deleted = 1
         where
             cart_item_id = #{id} and user_id = #{userId}
-    </delete>
+    </update>
 
-    <delete id="clearCart">
-        delete from
+    <update id="clearCart">
+        update
             tb_newbee_mall_shopping_cart_item
+        set
+            is_deleted = 1
         where
             user_id = #{userId}
-    </delete>
+    </update>
 
 </mapper>

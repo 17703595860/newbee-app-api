@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.study.maven.newbee.mapper.UserAddressMapper">
+
+    <select id="selectAllByUserId" resultType="com.study.maven.newbee.vo.UserAddressVO">
+        select
+            address_id, user_name, user_phone, default_flag, province_name, city_name, region_name, detail_address
+        from
+            tb_newbee_mall_user_address
+        where
+            user_id = #{userId} and is_deleted = 0
+    </select>
+
+    <select id="selectCountByUserIdAndAddressId" resultType="java.lang.Long">
+        select
+            count(address_id)
+        from
+            tb_newbee_mall_user_address
+        where
+            address_id = #{addressId} and user_id = #{userId}
+    </select>
+
+
+    <update id="deleteByUserIdAndAddressId">
+        update
+            tb_newbee_mall_user_address
+        set
+            is_deleted = 1
+        where
+            address_id = #{addressId} and user_id = #{userId}
+    </update>
+
+    <update id="clearByUserIdAndAddressId">
+        update
+            tb_newbee_mall_user_address
+        set
+            is_deleted = 1
+        where
+            user_id = #{userId}
+    </update>
+</mapper>
