@@ -73,4 +73,9 @@ public class UserAddressServiceImpl implements UserAddressService {
     public void clearUserAddress(Long userId) {
         userAddressMapper.clearByUserIdAndAddressId(userId);
     }
+
+    @Override
+    public UserAddressVO getDefaultAddressByUserId(Long userId) {
+        return userAddressMapper.getDefaultAddressByUserId(userId);
+    }
 }

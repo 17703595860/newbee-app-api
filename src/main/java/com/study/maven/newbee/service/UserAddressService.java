@@ -44,4 +44,11 @@ public interface UserAddressService {
      * @param userId 用户id
      */
     void clearUserAddress(Long userId);
+
+    /**
+     * 根据userId获取默认的收货地址
+     * @param userId 用户id
+     * @return 用户地址VO
+     */
+    UserAddressVO getDefaultAddressByUserId(Long userId);
 }

@@ -38,4 +38,13 @@
         where
             user_id = #{userId}
     </update>
+
+    <select id="getDefaultAddressByUserId" resultType="com.study.maven.newbee.vo.UserAddressVO">
+        select
+            address_id, user_id, user_name, user_phone, default_flag, province_name, city_name, region_name, detail_address
+        from
+            tb_newbee_mall_user_address
+        where
+            default_flag = 1 and user_id = #{userId}
+    </select>
 </mapper>
