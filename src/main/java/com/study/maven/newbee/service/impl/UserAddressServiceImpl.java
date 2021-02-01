@@ -52,6 +52,7 @@ public class UserAddressServiceImpl implements UserAddressService {
         if (tempData == null) {
             userAddress.setCreateTime(now.toDate());
             userAddress.setUpdateTime(now.toDate());
+            userAddress.setIsDeleted(false);
             userAddressMapper.insertSelective(userAddress);
         } else {
             if (tempData.getIsDeleted()) {

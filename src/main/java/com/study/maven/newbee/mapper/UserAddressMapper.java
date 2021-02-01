@@ -50,4 +50,11 @@ public interface UserAddressMapper extends Mapper<UserAddress> {
      * @return 用户地址VO
      */
     UserAddressVO getDefaultAddressByUserId(@Param("userId") Long userId);
+
+    /**
+     * 根据用户id和收货地址id获取用户地址
+     * @param addressId 收货地址id
+     * @param userId 用户id
+     */
+    UserAddress selectOneByUserIdAndAddressId(@Param("userId") Long userId, @Param("addressId") Long addressId);
 }

@@ -47,4 +47,13 @@
         where
             default_flag = 1 and user_id = #{userId}
     </select>
+
+    <select id="selectOneByUserIdAndAddressId" resultType="com.study.maven.newbee.entity.UserAddress">
+        select
+            address_id, user_id, user_name, user_phone, default_flag, province_name, city_name, region_name, detail_address, is_deleted, create_time, update_time
+        from
+            tb_newbee_mall_user_address
+        where
+            address_id = #{addressId} and user_id = #{userId} and is_deleted = 0
+    </select>
 </mapper>

@@ -4,7 +4,9 @@ import com.study.maven.newbee.entity.Cart;
 import com.study.maven.newbee.vo.CartVO;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
+import tk.mybatis.mapper.additional.idlist.DeleteByIdListMapper;
 import tk.mybatis.mapper.common.Mapper;
+import tk.mybatis.mapper.common.base.delete.DeleteByPrimaryKeyMapper;
 
 import java.util.List;
 
@@ -14,7 +16,7 @@ import java.util.List;
  * @date : Created in  2021/1/31 15:41:41
  */
 @Repository
-public interface CartMapper extends Mapper<Cart> {
+public interface CartMapper extends Mapper<Cart>, DeleteByIdListMapper<Cart, Long> {
 
     /**
      * 根据用户id获取所属的购物车数据
