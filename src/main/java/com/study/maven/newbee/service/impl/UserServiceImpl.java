@@ -14,6 +14,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
 /**
@@ -22,6 +23,7 @@ import tk.mybatis.mapper.entity.Example;
  * @date : Created in  2021/1/25 22:58:29
  */
 @Service("UserService")
+@Transactional
 public class UserServiceImpl implements UserService {
 
     @Autowired

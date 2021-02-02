@@ -10,6 +10,7 @@ import com.study.maven.newbee.vo.IndexGoodsVO;
 import com.study.maven.newbee.vo.IndexInfoVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
 import java.util.List;
@@ -21,6 +22,7 @@ import java.util.stream.Collectors;
  * @date : Created in  2021/1/30 10:55:17
  */
 @Service("indexConfigService")
+@Transactional
 public class IndexConfigServiceImpl implements IndexConfigService {
 
     @Autowired

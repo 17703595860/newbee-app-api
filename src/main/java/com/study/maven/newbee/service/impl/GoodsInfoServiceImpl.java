@@ -12,6 +12,7 @@ import com.study.maven.newbee.vo.PageResult;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,6 +26,7 @@ import java.util.Map;
  * @date : Created in  2021/1/30 19:40:20
  */
 @Service("goodsInfoService")
+@Transactional
 public class GoodsInfoServiceImpl implements GoodsInfoService {
 
     @Autowired

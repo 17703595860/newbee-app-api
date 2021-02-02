@@ -6,6 +6,7 @@ import com.study.maven.newbee.service.CategoryService;
 import com.study.maven.newbee.vo.CategoryVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -15,6 +16,7 @@ import java.util.List;
  * @date : Created in  2021/1/30 17:54:55
  */
 @Service("categoryService")
+@Transactional
 public class CategoryServiceImpl implements CategoryService {
 
     @Autowired

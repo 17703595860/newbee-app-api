@@ -8,6 +8,7 @@ import com.study.maven.newbee.vo.UserAddressVO;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -17,6 +18,7 @@ import java.util.List;
  * @date : Created in  2021/2/1 14:35
  */
 @Service("userAddressService")
+@Transactional
 public class UserAddressServiceImpl implements UserAddressService {
 
     @Autowired
@@ -48,6 +50,17 @@ public class UserAddressServiceImpl implements UserAddressService {
         DateTime now = DateTime.now();
         UserAddress userAddress = UserAddress.transform(userAddressVO);
         userAddress.setUserId(userId);
+        // 如果是默认地址，吧已经存在的都改为不默认
+        if (userAddress.getDefaultFlag()) {
+            userAddressMapper.updateNotDefaultByUserId(userId);
+        }
+        // 如果没有地址，第一次添加自动默认
+        int count = userAddressMapper.selectCount(new UserAddress() {{
+            setUserId(userId);
+        }});
+        if (count == 0) {
+            userAddress.setDefaultFlag(true);
+        }
         UserAddress tempData = userAddressMapper.selectOne(userAddress);
         if (tempData == null) {
             userAddress.setCreateTime(now.toDate());
@@ -67,6 +80,13 @@ public class UserAddressServiceImpl implements UserAddressService {
 
     @Override
     public void deleteUserAddress(Long addressId, Long userId) {
+        UserAddress userAddress = userAddressMapper.selectOneByUserIdAndAddressId(userId, addressId);
+        if (userAddress == null) {
+            throw new SystemException("收货地址不存在");
+        }
+        if (userAddress.getDefaultFlag()) {
+            throw new SystemException("默认地址不能删除，请先修改默认收货地址");
+        }
         userAddressMapper.deleteByUserIdAndAddressId(userId, addressId);
     }
 

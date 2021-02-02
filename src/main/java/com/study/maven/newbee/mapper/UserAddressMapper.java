@@ -57,4 +57,10 @@ public interface UserAddressMapper extends Mapper<UserAddress> {
      * @param userId 用户id
      */
     UserAddress selectOneByUserIdAndAddressId(@Param("userId") Long userId, @Param("addressId") Long addressId);
+
+    /**
+     * 取消当前的收货地址的默认状态
+     * @param userId 用户id
+     */
+    void updateNotDefaultByUserId(@Param("userId") Long userId);
 }
