@@ -73,3 +73,25 @@ constants:
   # 购物车页面默认分页参数
   cart-page-size: 10
   cart-current-page: 1
+
+order:
+  # 支付状态可选值
+  payStatusRange:
+    - 0
+    - 1
+    - -1
+  # 支付类型可选值
+  payTypeRange:
+    - 0
+    - 1
+    - 2
+  # 订单状态可选值
+  orderStatusRange:
+    - 0
+    - 1
+    - 2
+    - 3
+    - 4
+    - -1
+    - -2
+    - -3

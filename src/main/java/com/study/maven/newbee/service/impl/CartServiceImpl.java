@@ -150,4 +150,12 @@ public class CartServiceImpl implements CartService {
         cartMapper.clearCart(userId);
     }
 
+    @Override
+    public List<CartVO> getCartVOListByCartIds(List<Long> cartIds, Long userId) {
+        List<CartVO> cartVOS = cartMapper.selectAllByCartIdsAndUser(cartIds, userId);
+        if (cartVOS.size() != cartIds.size()) {
+            throw new SystemException("购物车数据错误，有不存在的，或者失效的");
+        }
+        return cartVOS;
+    }
 }

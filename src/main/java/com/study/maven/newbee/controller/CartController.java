@@ -12,6 +12,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -85,6 +86,22 @@ public class CartController implements ResultGenerator {
     public ResponseEntity<Result<?>> updateCartNum(@ApiIgnore @TokenToUser User user) {
         cartService.clearCart(user.getUserId());
         return success();
+    }
+
+
+    @GetMapping("/cart-sure")
+    @ApiOperation(value = "根据购物车id查询购物车明细", notes = "确认订单页面使用")
+    @ApiImplicitParam(name = "cartIds", value = "购物车id集合，字符串，用逗号分隔，使用mvc解析")
+    public ResponseEntity<Result<?>> getCartVOByIds(Long [] cartIds, @TokenToUser @ApiIgnore User user) {
+        List<Long> cartIdList = Arrays.asList(cartIds);
+        if (CollectionUtils.isEmpty(cartIdList)) {
+            return internalServererror("参数错误");
+        }
+        List<CartVO> cartVOS = cartService.getCartVOListByCartIds(cartIdList, user.getUserId());
+        if (CollectionUtils.isEmpty(cartVOS)) {
+            return notFound();
+        }
+        return success(cartVOS);
     }
 
 }

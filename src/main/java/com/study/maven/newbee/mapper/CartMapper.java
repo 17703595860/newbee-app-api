@@ -60,4 +60,12 @@ public interface CartMapper extends Mapper<Cart>, DeleteByIdListMapper<Cart, Lon
      * @param userId 用户id
      */
     void clearCart(@Param("userId") Long userId);
+
+    /**
+     * 根据购物车id集合查询购物车信息(有效)
+     * @param cartIds 购物车id
+     * @param userId 用户id
+     * @return 查询到的数据
+     */
+    List<CartVO> selectAllByCartIdsAndUser(@Param("cartIds") List<Long> cartIds, @Param("userId") Long userId);
 }

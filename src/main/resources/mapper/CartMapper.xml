@@ -13,7 +13,7 @@
         on
             a.goods_id = b.goods_id
         where
-            user_id = #{userId} and is_deleted = 0
+            a.user_id = #{userId} and a.is_deleted = 0
     </select>
 
     <sql id="cartField">
@@ -64,5 +64,22 @@
         where
             user_id = #{userId}
     </update>
+
+    <select id="selectAllByCartIdsAndUser" resultType="com.study.maven.newbee.vo.CartVO">
+        select
+            a.cart_item_id, a.user_id, a.goods_id, a.goods_count,
+            b.goods_name, b.goods_cover_img, b.original_price, b.selling_price, b.goods_sell_status
+        from
+            tb_newbee_mall_shopping_cart_item a
+        left join
+            tb_newbee_mall_goods_info b
+        on
+            a.goods_id = b.goods_id
+        where
+            a.user_id = #{userId} and a.is_deleted = 0 and b.goods_sell_status = 1  and
+            <foreach collection="cartIds" item="cartId" open="a.cart_item_id in ( " close=" )" separator=", ">
+                #{cartId}
+            </foreach>
+    </select>
 
 </mapper>

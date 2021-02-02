@@ -48,4 +48,12 @@ public interface CartService {
      * @param userId 用户id
      */
     void clearCart(Long userId);
+
+    /**
+     * 根据购物车id集合查询购物车信息
+     * @param cartIds 购物车id
+     * @param userId 用户id
+     * @return 查询到的数据
+     */
+    List<CartVO> getCartVOListByCartIds(List<Long> cartIds, Long userId);
 }
