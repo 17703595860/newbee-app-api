@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.study.maven.newbee.mapper.OrderItemMapper">
+
+
+    <select id="selectByOrderId" resultType="com.study.maven.newbee.entity.OrderItem">
+        select
+            order_item_id, order_id, goods_id, goods_name, goods_cover_img, selling_price, goods_count, create_time
+        from
+            tb_newbee_mall_order_item
+        where
+            order_id = #{orderId}
+    </select>
+
+    <select id="selectByOrderIds" resultType="com.study.maven.newbee.entity.OrderItem">
+        select
+            order_item_id, order_id, goods_id, goods_name, goods_cover_img, selling_price, goods_count, create_time
+        from
+            tb_newbee_mall_order_item
+        <where>
+            <if test="orderIds != null and orderIds.size != 0">
+                <foreach collection="orderIds" item="orderId" open="order_id in ( " close=" )" separator=", ">
+                    #{orderId}
+                </foreach>
+            </if>
+        </where>
+    </select>
+</mapper>
