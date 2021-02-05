@@ -11,7 +11,6 @@ import com.study.maven.newbee.vo.IndexInfoVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import tk.mybatis.mapper.entity.Example;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -36,10 +35,7 @@ public class IndexConfigServiceImpl implements IndexConfigService {
     public IndexInfoVO getIndexInfo() {
         IndexInfoVO indexInfoVO = new IndexInfoVO();
         // 轮播图(有效的)
-        Example example = new Example(Carousel.class);
-        example.orderBy("carouselRank").desc();
-        example.createCriteria().andEqualTo("isDeleted", false);
-        List<Carousel> carousels = carouselMapper.selectByExample(example);
+        List<Carousel> carousels = carouselMapper.selectAllOrderByCarouselRank();
         List<IndexCarouseVO> indexCarouseVOS = carousels.stream().map(IndexCarouseVO::transform).collect(Collectors.toList());
         indexInfoVO.setCarouses(indexCarouseVOS);
         // 热门商品

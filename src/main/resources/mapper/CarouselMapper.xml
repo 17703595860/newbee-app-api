@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.study.maven.newbee.mapper.CarouselMapper">
+
+    <select id="selectAllOrderByCarouselRank" resultType="com.study.maven.newbee.entity.Carousel">
+        select
+            carousel_id, carousel_url, redirect_url, carousel_rank, is_deleted, create_time, create_user, update_time, update_user
+        from
+            tb_newbee_mall_carousel
+        where
+            is_deleted = 0
+        order by
+            carousel_rank desc
+    </select>
+
+</mapper>

@@ -15,7 +15,6 @@ import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import tk.mybatis.mapper.entity.Example;
 
 /**
  * @author HLH
@@ -35,10 +34,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String login(String username, String password) {
-        Example example = new Example(User.class);
-        Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("loginName", username);
-        User daoUser = userMapper.selectOneByExample(example);
+        User daoUser = userMapper.selectOne(new User(){{
+            setLoginName(username);
+        }});
         if (daoUser == null) {
             throw new AuthenticationException("登录失败，用户名不存在");
         }

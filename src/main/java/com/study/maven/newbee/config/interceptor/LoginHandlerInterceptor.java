@@ -41,9 +41,9 @@ public class LoginHandlerInterceptor implements HandlerInterceptor {
         if (StringUtils.isBlank(token)){
             throw new AuthenticationException("token传递错误");
         }
-        Example example = new Example(UserToken.class);
-        example.createCriteria().andEqualTo("token", token);
-        UserToken userToken = userTokenMapper.selectOneByExample(example);
+        UserToken userToken = userTokenMapper.selectOne(new UserToken() {{
+            setToken(token);
+        }});
         if (userToken == null) {
             throw new AuthenticationException("token不存在");
         }
@@ -55,9 +55,7 @@ public class LoginHandlerInterceptor implements HandlerInterceptor {
             user = JwtUtils.getInfoFromToken(token, jwtProperties.getPublicKey()).getUser();
         } catch (Exception e) {
             // 删除token
-            Example example1 = new Example(UserToken.class);
-            example1.createCriteria().andEqualTo("token", token);
-            userTokenMapper.deleteByExample(example1);
+            userTokenMapper.delete(userToken);
             throw new AuthenticationException("Token解析错误，请重新登录");
         }
         return true;

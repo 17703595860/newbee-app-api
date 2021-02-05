@@ -18,7 +18,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import tk.mybatis.mapper.entity.Example;
 
 import java.util.List;
 
@@ -64,11 +63,10 @@ public class CartServiceImpl implements CartService {
             throw new SystemException("您的购物车已经超出限制");
         }
         // 根据商品id获取商品信息
-        Example example = new Example(GoodsInfo.class);
-        Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("goodsId", cartParamVO.getGoodsId());
-        criteria.andEqualTo("goodsSellStatus", true);
-        GoodsInfo goodsInfo = goodsInfoMapper.selectOneByExample(example);
+        GoodsInfo goodsInfo = goodsInfoMapper.selectOne(new GoodsInfo(){{
+            setGoodsId(cartParamVO.getGoodsId());
+            setGoodsSellStatus(true);
+        }});
         if (goodsInfo == null) {
             throw new SystemException("商品不存在或者已经被删除");
         }
