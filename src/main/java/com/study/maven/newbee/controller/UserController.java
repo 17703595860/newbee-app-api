@@ -7,6 +7,7 @@ import com.study.maven.newbee.mapper.UserMapper;
 import com.study.maven.newbee.mapper.UserTokenMapper;
 import com.study.maven.newbee.service.UserService;
 import com.study.maven.newbee.vo.Result;
+import com.study.maven.newbee.vo.UpdateUserVO;
 import com.study.maven.newbee.vo.UserLoginParamVO;
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
@@ -39,13 +40,19 @@ public class UserController implements ResultGenerator {
 
     @PostMapping("/login")
     @ApiOperation(value = "登录接口", notes = "")
-//    @ApiImplicitParam(name = "userLoginParamVO", required = true, value = "登录用户", dataType = "UserLoginParamVO")
     private ResponseEntity<Result<?>> login(@RequestBody @Valid @ApiParam("要登录的用户信息") UserLoginParamVO userLoginParamVO) {
         String token = userService.login(userLoginParamVO.getUsername(), userLoginParamVO.getPassword());
         if (StringUtils.isBlank(token)) {
             return internalServererror("生成token失败");
         }
         return success(token);
+    }
+
+    @PostMapping("/register")
+    @ApiOperation(value = "登录接口", notes = "")
+    private ResponseEntity<Result<?>> register(@RequestBody @Valid @ApiParam("要登录的用户信息") UserLoginParamVO userLoginParamVO) {
+        userService.register(userLoginParamVO.getUsername(), userLoginParamVO.getPassword());
+        return success();
     }
 
     @ApiOperation(value = "获取登录用户信息", notes = "")
@@ -57,12 +64,13 @@ public class UserController implements ResultGenerator {
 
     @ApiOperation(value = "修改用户信息", notes = "")
     @PutMapping("/info")
-    public ResponseEntity<Result<?>> updateUser(@RequestBody @ApiParam("要修改的用户信息") User updateUser, @TokenToUser @ApiIgnore User user) {
+    public ResponseEntity<Result<?>> updateUser(@RequestBody @ApiParam("要修改的用户信息") UpdateUserVO userParam, @TokenToUser @ApiIgnore User user) {
         // 手机端，个人中心，只能设置自己的信息
+        User updateUser = User.transform(userParam);
         updateUser.setUserId(user.getUserId());
         // 如果修改的事密码，加密
-        if (updateUser.getPasswordMd5() != null){
-            updateUser.setPasswordMd5(DigestUtils.md5Hex(updateUser.getPasswordMd5()));
+        if (userParam.getPassword() != null){
+            updateUser.setPasswordMd5(DigestUtils.md5Hex(userParam.getPassword()));
         }
         // 去除不允许修改的项
         updateUser.setCreateTime(null);

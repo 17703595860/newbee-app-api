@@ -1,10 +1,12 @@
 package com.study.maven.newbee.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.study.maven.newbee.vo.UpdateUserVO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.beans.BeanUtils;
 import tk.mybatis.mapper.annotation.KeySql;
 
 import javax.persistence.Id;
@@ -39,4 +41,9 @@ public class User implements Serializable {
     private Date createTime;        // 创建时间
 
 
+    public static User transform(UpdateUserVO userParam) {
+        User user = new User();
+        BeanUtils.copyProperties(userParam, user);
+        return user;
+    }
 }

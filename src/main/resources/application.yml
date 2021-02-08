@@ -53,6 +53,7 @@ login:
   login-release:
     # login
     - /api/user/login
+    - /api/user/register
     # 错误请求
     - /error/**
     # swagger

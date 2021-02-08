@@ -37,6 +37,10 @@ public class LoginHandlerInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        String method = request.getMethod();
+        if (StringUtils.equals(method, "OPTIONS")) {
+            return true;
+        }
         String token = request.getHeader(constants.getTokenHeaderName());
         if (StringUtils.isBlank(token)){
             throw new AuthenticationException("token传递错误");

@@ -14,6 +14,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -52,6 +53,19 @@ public class AppConfig implements WebMvcConfigurer {
     }
 
     /**
+     * 跨域
+     */
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")  // 拦截的请求
+                .allowedOrigins("http://localhost:9001", "http://127.0.0.1:9001") // 允许跨域列表
+                .allowCredentials(true)     // 允许携带cookie
+                .allowedMethods("GET", "POST", "DELETE", "PUT", "HEAD", "OPTIONS")        // 允许的请求方式
+                .allowedHeaders("*")        // 允许的请求头
+                .maxAge(3600);              // 超时时间
+    }
+
+    /**
      * 添加登录拦截器
      * @param registry 拦截器列表
      */
@@ -68,8 +82,8 @@ public class AppConfig implements WebMvcConfigurer {
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
         resolvers.add(tokenToUserMethodArgumentResolver);
-        resolvers.add(pageSizeMethodArgumentResolver);
-        resolvers.add(currentPageMethodArgumentResolver);
+//        resolvers.add(pageSizeMethodArgumentResolver);
+//        resolvers.add(currentPageMethodArgumentResolver);
     }
 
 

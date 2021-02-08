@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
  * @date : Created in  2021/2/1 20:55:21
  */
 @RestController
-@RequestMapping("/order")
+@RequestMapping("/api/order")
 @Api(tags = "订单接口")
 public class OrderController implements ResultGenerator {
 

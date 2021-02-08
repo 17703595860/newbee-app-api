@@ -3,6 +3,7 @@ package com.study.maven.newbee.service.impl;
 import com.study.maven.newbee.entity.User;
 import com.study.maven.newbee.entity.UserToken;
 import com.study.maven.newbee.exception.AuthenticationException;
+import com.study.maven.newbee.exception.SystemException;
 import com.study.maven.newbee.mapper.UserMapper;
 import com.study.maven.newbee.mapper.UserTokenMapper;
 import com.study.maven.newbee.service.UserService;
@@ -12,6 +13,9 @@ import com.study.maven.newbee.utils.PayLoad;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeUtils;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -71,4 +75,26 @@ public class UserServiceImpl implements UserService {
         return token;
     }
 
+    @Override
+    public void register(String username, String password) {
+        User user = userMapper.selectOne(new User() {{
+            setLoginName(username);
+        }});
+        if (user != null) {
+            throw new SystemException("用户已经存在");
+        }
+        DateTime now = DateTime.now();
+        User saveUser = User.builder()
+                .loginName(username)
+                .passwordMd5(DigestUtils.md5Hex(password))
+                .nickName("用户" + now.toString("yyyyMMddHHmmss"))
+                .createTime(now.toDate())
+                .isDeleted(false)
+                .lockedFlag(false)
+                .build();
+        int flag = userMapper.insertSelective(saveUser);
+        if (flag != 1) {
+            throw new SystemException("注册失败");
+        }
+    }
 }
