@@ -1,11 +1,13 @@
 package com.study.maven.newbee.vo;
 
+import com.study.maven.newbee.entity.UserAddress;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.beans.BeanUtils;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -47,4 +49,9 @@ public class UserAddressVO {
     private String detailAddress;       // 详细地址
 
 
+    public static UserAddressVO transform(UserAddress userAddress) {
+        UserAddressVO userAddressVO = new UserAddressVO();
+        BeanUtils.copyProperties(userAddress, userAddressVO);
+        return userAddressVO;
+    }
 }

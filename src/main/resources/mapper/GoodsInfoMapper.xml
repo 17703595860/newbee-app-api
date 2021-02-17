@@ -10,7 +10,7 @@
             tb_newbee_mall_goods_info
         <where>
             <if test="keyword != null and keyword.length != 0">
-                goods_name = #{keyword}
+                goods_name like '%${keyword}%'
             </if>
             <if test="categoryId != null and categoryId != 0">
                 and goods_category_id = #{categoryId}

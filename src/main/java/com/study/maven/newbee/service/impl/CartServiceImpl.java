@@ -124,7 +124,7 @@ public class CartServiceImpl implements CartService {
         if (goodsInfo == null || !goodsInfo.getGoodsSellStatus()) {
             throw new SystemException("商品不存在或者已被下架");
         }
-        int count = cart.getGoodsCount() + updateCartParamVO.getGoodsCount();
+        int count = updateCartParamVO.getGoodsCount();
         if (count < 0) {
             throw new SystemException("不能改为负");
         }

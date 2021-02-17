@@ -51,4 +51,19 @@ public interface UserAddressService {
      * @return 用户地址VO
      */
     UserAddressVO getDefaultAddressByUserId(Long userId);
+
+    /**
+     * 根据收货地址id，获取当前登录用户的对应的收货地址
+     * @param userId 用户id
+     * @param addressId 收货地址id
+     * @return 用户地址VO
+     */
+    UserAddressVO getUserAddressByUserIdAndAddressId(Long userId, Long addressId);
+
+    /**
+     * 获取当前登录用户的默认的收货地址
+     * @param userId userId 用户id
+     * @return 用户地址VO
+     */
+    UserAddressVO getDefaultUserAddressByUserId(Long userId);
 }

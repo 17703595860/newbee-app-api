@@ -6,9 +6,7 @@ import com.study.maven.newbee.config.entity.OrderProperties;
 import com.study.maven.newbee.entity.User;
 import com.study.maven.newbee.service.CartService;
 import com.study.maven.newbee.service.OrderService;
-import com.study.maven.newbee.vo.OrderParamVO;
-import com.study.maven.newbee.vo.OrderVO;
-import com.study.maven.newbee.vo.Result;
+import com.study.maven.newbee.vo.*;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +14,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -40,8 +39,8 @@ public class OrderController implements ResultGenerator {
     @PostMapping("/generateOrder")
     @ApiOperation("根据购物车id和地址id生成订单")
     public ResponseEntity<Result<?>> generateOrder(@ApiParam("生成订单的数据封装，包括购物车id集合，地址id") @RequestBody OrderParamVO orderParamVO, @TokenToUser @ApiIgnore User user) {
-        String orderId = orderService.generateOrder(orderParamVO, user.getUserId());
-        return success(orderId);
+        String orderNo = orderService.generateOrder(orderParamVO, user.getUserId());
+        return success(orderNo);
     }
 
     @GetMapping("/paySuccess")
@@ -52,8 +51,8 @@ public class OrderController implements ResultGenerator {
             @TokenToUser @ApiIgnore User user
     ) {
         // 如果不在支付类型之内，直接返回错误
-        List<Integer> orderPayTypeRange = orderProperties.getPayStatusRange().entrySet().stream().map(Map.Entry::getKey).collect(Collectors.toList());
-        if (orderPayTypeRange.contains(payType)) {
+        List<Integer> orderPayTypeRange = orderProperties.getPayTypeRange().entrySet().stream().map(Map.Entry::getKey).collect(Collectors.toList());
+        if (!orderPayTypeRange.contains(payType)) {
             return internalServererror("支付类型错误");
         }
         // 模拟现在已经支付成功，这是回调方法处理
@@ -71,6 +70,25 @@ public class OrderController implements ResultGenerator {
         return success(orderVO);
     }
 
+    @GetMapping("/page")
+    @ApiOperation("获取订单列表（分页）")
+    @ApiImplicitParams(value = {
+            @ApiImplicitParam(name = "pageSize", required = false, defaultValue = "10", value = "每页条数"),
+            @ApiImplicitParam(name = "currentPage", required = false, defaultValue = "1", value = "当前页码"),
+            @ApiImplicitParam(name = "status", required = false, value = "订单状态")
+    })
+    public ResponseEntity<Result<?>> getOrderlistPage(Integer pageSize, Integer currentPage, Integer status, @TokenToUser @ApiIgnore User user) {
+        List<Integer> statusRange = orderProperties.getOrderStatusRange().entrySet().stream().map(Map.Entry::getKey).collect(Collectors.toList());
+        if (status != null && status != -100 && !statusRange.contains(status)){
+            return internalServererror("状态码错误");
+        }
+        PageResult<OrderVO> orderVOPage = orderService.getOrderlistPage(pageSize, currentPage, status, user.getUserId());
+        if (CollectionUtils.isEmpty(orderVOPage.getList())) {
+            return notFound();
+        }
+        return success(orderVOPage);
+    }
+
     @GetMapping
     @ApiOperation("获取订单列表")
     public ResponseEntity<Result<?>> getOrderlist(@TokenToUser @ApiIgnore User user) {
@@ -79,6 +97,19 @@ public class OrderController implements ResultGenerator {
             return notFound();
         }
         return success(orderVOS);
+    }
+
+    @PutMapping("/updateOrderStatus")
+    @ApiOperation("修改订单状态")
+    public ResponseEntity<Result<?>> updateOrderStatus(@ApiParam("修改订单状态VO") @Valid OrderStatusVO orderStatusVO, @TokenToUser @ApiIgnore User user) {
+        List<Integer> statusRange = orderProperties.getOrderStatusRange().entrySet().stream().map(Map.Entry::getKey).collect(Collectors.toList());
+        Integer status = orderStatusVO.getStatus();
+        if (!statusRange.contains(status)){
+            return internalServererror("状态码错误");
+        }
+        orderService.updateOrderStatus(orderStatusVO, user.getUserId());
+        OrderVO orderVO = orderService.getOrderDetails(orderStatusVO.getOrderNo(), user.getUserId());
+        return success(orderVO);
     }
 
     /*@GetMapping("/pay-status/{payStatus}")

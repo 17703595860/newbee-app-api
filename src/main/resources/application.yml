@@ -68,7 +68,7 @@ constants:
   token-header-name: 'Authorization'
   # 首页每个模块展示商品个数
   index-num: 6
-  # 商品页面默认分页参数
+  # 商品和订单页面默认分页参数
   page-size: 10
   current-page: 1
   # 购物车页面默认分页参数

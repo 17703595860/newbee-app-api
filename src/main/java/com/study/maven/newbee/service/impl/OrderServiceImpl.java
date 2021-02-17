@@ -1,14 +1,15 @@
 package com.study.maven.newbee.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.study.maven.newbee.config.entity.Constants;
 import com.study.maven.newbee.config.entity.OrderProperties;
 import com.study.maven.newbee.entity.*;
 import com.study.maven.newbee.exception.SystemException;
 import com.study.maven.newbee.mapper.*;
 import com.study.maven.newbee.service.OrderService;
 import com.study.maven.newbee.utils.IdWorker;
-import com.study.maven.newbee.vo.OrderItemVO;
-import com.study.maven.newbee.vo.OrderParamVO;
-import com.study.maven.newbee.vo.OrderVO;
+import com.study.maven.newbee.vo.*;
 import org.joda.time.DateTime;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +46,8 @@ public class OrderServiceImpl implements OrderService {
     private OrderAddressMapper orderAddressMapper;
     @Autowired
     private OrderProperties orderProperties;
+    @Autowired
+    private Constants constants;
 
     @Override
     public String generateOrder(OrderParamVO orderParamVO, Long userId) {
@@ -164,5 +167,53 @@ public class OrderServiceImpl implements OrderService {
             return orderVO;
         }).collect(Collectors.toList());
         return orderVOS;
+    }
+
+    @Override
+    public PageResult<OrderVO> getOrderlistPage(Integer pageSize, Integer currentPage, Integer status, Long userId) {
+        // 分页参数判断
+        pageSize = pageSize == null || pageSize < 1 ? constants.getPageSize() : pageSize;
+        currentPage = currentPage == null || currentPage < 1 ? constants.getCurrentPage() : currentPage;
+        // 查询 分页
+        PageHelper.startPage(currentPage, pageSize);
+        List<Order> orders = orderMapper.selectByUserIdAndOrderStatus(userId, status);
+        if (CollectionUtils.isEmpty(orders)){
+            return new PageResult<>();
+        }
+        PageInfo<Order> pageInfo = new PageInfo<>(orders);
+        PageResult<OrderVO> orderPageResult = new PageResult<>(Long.valueOf(pageInfo.getTotal()).intValue(), pageInfo.getPages(), pageInfo.getPageSize(), pageInfo.getPageNum());
+
+        // 装换OrderVO
+        List<Long> orderIds = orders.stream().map(Order::getOrderId).collect(Collectors.toList());
+        List<OrderItem> orderItems = orderItemMapper.selectByOrderIds(orderIds);
+        List<OrderVO> orderVOS = orders.stream().map(order -> {
+            OrderVO orderVO = OrderVO.transform(order, orderProperties);
+            List<OrderItemVO> orderItemVOS = orderItems.stream().filter(orderItem -> order.getOrderId().equals(orderItem.getOrderId())).map(OrderItemVO::transform).collect(Collectors.toList());
+            orderVO.setOrderItems(orderItemVOS);
+            return orderVO;
+        }).collect(Collectors.toList());
+
+        // 放回数据，返回
+        orderPageResult.setList(orderVOS);
+        return orderPageResult;
+    }
+
+    @Override
+    public void updateOrderStatus(OrderStatusVO orderStatusVO, Long userId) {
+        String orderNo = orderStatusVO.getOrderNo();
+        Integer status = orderStatusVO.getStatus();
+        Order order = orderMapper.selectByUserIdAndOrderNoAndOrderStatus(userId, orderNo, status);
+        if (order == null) {
+            throw new SystemException("订单编号不存在");
+        }
+        if (status < 0 || status > order.getOrderStatus()) {
+            order.setOrderStatus(status);
+            int flag = orderMapper.updateByPrimaryKeySelective(order);
+            if (flag < 1) {
+                throw new SystemException("订单状态修改错误");
+            }
+        } else {
+            throw new SystemException("订单状态修改错误");
+        }
     }
 }

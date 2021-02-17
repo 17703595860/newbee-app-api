@@ -9,8 +9,10 @@ import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author HLH
@@ -37,6 +39,10 @@ public class UserAddressServiceImpl implements UserAddressService {
         Long count = userAddressMapper.selectCountByUserIdAndAddressId(userId, userAddressVO.getAddressId());
         if (count != 1) {
             throw new SystemException("改用户下没有此地址，请联系管理员");
+        }
+        // 如果是默认地址，吧已经存在的都改为不默认
+        if (userAddressVO.getDefaultFlag()) {
+            userAddressMapper.updateNotDefaultByUserId(userId);
         }
         UserAddress userAddress = UserAddress.transform(userAddressVO);
         userAddress.setUserId(userId);
@@ -98,5 +104,22 @@ public class UserAddressServiceImpl implements UserAddressService {
     @Override
     public UserAddressVO getDefaultAddressByUserId(Long userId) {
         return userAddressMapper.getDefaultAddressByUserId(userId);
+    }
+
+    @Override
+    public UserAddressVO getUserAddressByUserIdAndAddressId(Long userId, Long addressId) {
+        UserAddress userAddress = userAddressMapper.selectOneByUserIdAndAddressId(userId, addressId);
+        UserAddressVO userAddressVO = UserAddressVO.transform(userAddress);
+        return userAddressVO;
+    }
+
+    @Override
+    public UserAddressVO getDefaultUserAddressByUserId(Long userId) {
+        List<UserAddressVO> userAddressVOList = this.getUserAddressByUserId(userId);
+        List<UserAddressVO> defaultAddressList = userAddressVOList.stream().filter(address -> address.getDefaultFlag()).collect(Collectors.toList());
+        if (CollectionUtils.isEmpty(defaultAddressList)) {
+            throw new SystemException("无默认的收货地址，请设置默认收货地址");
+        }
+        return defaultAddressList.get(0);
     }
 }

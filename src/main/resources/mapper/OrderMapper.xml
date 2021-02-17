@@ -20,4 +20,32 @@
             user_id = #{userId}
     </select>
 
+    <select id="selectByUserIdAndOrderStatus" resultType="com.study.maven.newbee.entity.Order">
+        select
+            order_id, order_no, user_id, total_price, pay_status, pay_type, pay_time, order_status, extra_info, is_deleted, create_time, update_time
+        from
+            tb_newbee_mall_order
+        where
+            user_id = #{userId}
+        <if test='status != null'>
+            <choose>
+                <when test="status == -100">
+                    and order_status &lt; 0
+                </when>
+                <otherwise>
+                    and order_status = #{status}
+                </otherwise>
+            </choose>
+        </if>
+    </select>
+
+    <select id="selectByUserIdAndOrderNoAndOrderStatus" resultType="com.study.maven.newbee.entity.Order">
+        select
+            order_id, order_no, user_id, total_price, pay_status, pay_type, pay_time, order_status, extra_info, is_deleted, create_time, update_time
+        from
+            tb_newbee_mall_order
+        where
+            user_id = #{userId} and order_status = #{status} and order_no = #{orderNo}
+    </select>
+
 </mapper>

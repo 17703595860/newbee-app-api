@@ -29,4 +29,21 @@ public interface OrderMapper extends Mapper<Order> {
      * @return 订单列表
      */
     List<Order> selectByUserId(@Param("userId") Long userId);
+
+    /**
+     * 根据用户id和订单状态查询订单信息
+     * @param userId 用户id
+     * @param status 订单状态
+     * @return 订单列表数据
+     */
+    List<Order> selectByUserIdAndOrderStatus(@Param("userId") Long userId, @Param("status") Integer status);
+
+    /**
+     * 根据用户id，订单编号，订单状态查询订单
+     * @param userId 用户id
+     * @param orderNo 订单编号
+     * @param status 订单状态
+     * @return 订单信息
+     */
+    Order selectByUserIdAndOrderNoAndOrderStatus(@Param("userId") Long userId, @Param("orderNo") String orderNo, @Param("status") Integer status);
 }

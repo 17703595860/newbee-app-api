@@ -46,4 +46,10 @@ public class PageResult<T> implements Serializable {
         this.list = pageInfo.getList();
     }
 
+    public PageResult(Integer totalCount, Integer totalPage, Integer pageSize, Integer currentPage) {
+        this.totalCount = totalCount;
+        this.totalPage = totalPage;
+        this.pageSize = pageSize;
+        this.currentPage = currentPage;
+    }
 }

@@ -31,6 +31,20 @@ public class UserAddressController implements ResultGenerator {
     @Autowired
     private UserAddressService userAddressService;
 
+    @GetMapping("/{id}")
+    @ApiOperation("根据收货地址id，获取当前登录用户的对应的收货地址")
+    public ResponseEntity<Result<?>> getUserAddressById(@ApiParam("收货地址id") @PathVariable Long id, @TokenToUser @ApiIgnore User user) {
+        UserAddressVO userAddressVO = userAddressService.getUserAddressByUserIdAndAddressId(user.getUserId(), id);
+        return success(userAddressVO);
+    }
+
+    @GetMapping("/default")
+    @ApiOperation("获取当前登录用户的默认的收货地址")
+    public ResponseEntity<Result<?>> getDefaultUserAddress(@TokenToUser @ApiIgnore User user) {
+        UserAddressVO userAddressVO = userAddressService.getDefaultUserAddressByUserId(user.getUserId());
+        return success(userAddressVO);
+    }
+
     @GetMapping
     @ApiOperation("获取当前登录用户的所有收货地址")
     public ResponseEntity<Result<?>> getUserAddress(@TokenToUser @ApiIgnore User user) {

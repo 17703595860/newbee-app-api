@@ -1,7 +1,9 @@
 package com.study.maven.newbee.service;
 
 import com.study.maven.newbee.vo.OrderParamVO;
+import com.study.maven.newbee.vo.OrderStatusVO;
 import com.study.maven.newbee.vo.OrderVO;
+import com.study.maven.newbee.vo.PageResult;
 
 import java.util.List;
 
@@ -43,4 +45,21 @@ public interface OrderService {
      * @return 订单列表id
      */
     List<OrderVO> getOrderlist(Long userId);
+
+    /**
+     * 根据用户id, 状态码，分页对象，查询订单列表
+     * @param pageSize 页面长度
+     * @param currentPage 当前页码
+     * @param status 订单状态
+     * @param userId 用户id
+     * @return 查询到的订单数据
+     */
+    PageResult<OrderVO> getOrderlistPage(Integer pageSize, Integer currentPage, Integer status, Long userId);
+
+    /**
+     * 根据用户id和订单编号，订单状态
+     * @param orderStatusVO 订单编号和订单状态封装对象
+     * @param userId 用户id
+     */
+    void updateOrderStatus(OrderStatusVO orderStatusVO, Long userId);
 }
