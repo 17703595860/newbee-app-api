@@ -202,7 +202,7 @@ public class OrderServiceImpl implements OrderService {
     public void updateOrderStatus(OrderStatusVO orderStatusVO, Long userId) {
         String orderNo = orderStatusVO.getOrderNo();
         Integer status = orderStatusVO.getStatus();
-        Order order = orderMapper.selectByUserIdAndOrderNoAndOrderStatus(userId, orderNo, status);
+        Order order = orderMapper.selectByUserIdAndOrderNo(userId, orderNo);
         if (order == null) {
             throw new SystemException("订单编号不存在");
         }

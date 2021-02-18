@@ -101,7 +101,7 @@ public class OrderController implements ResultGenerator {
 
     @PutMapping("/updateOrderStatus")
     @ApiOperation("修改订单状态")
-    public ResponseEntity<Result<?>> updateOrderStatus(@ApiParam("修改订单状态VO") @Valid OrderStatusVO orderStatusVO, @TokenToUser @ApiIgnore User user) {
+    public ResponseEntity<Result<?>> updateOrderStatus(@ApiParam("修改订单状态VO") @Valid @RequestBody OrderStatusVO orderStatusVO, @TokenToUser @ApiIgnore User user) {
         List<Integer> statusRange = orderProperties.getOrderStatusRange().entrySet().stream().map(Map.Entry::getKey).collect(Collectors.toList());
         Integer status = orderStatusVO.getStatus();
         if (!statusRange.contains(status)){

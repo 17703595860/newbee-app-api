@@ -39,13 +39,13 @@
         </if>
     </select>
 
-    <select id="selectByUserIdAndOrderNoAndOrderStatus" resultType="com.study.maven.newbee.entity.Order">
+    <select id="selectByUserIdAndOrderNo" resultType="com.study.maven.newbee.entity.Order">
         select
             order_id, order_no, user_id, total_price, pay_status, pay_type, pay_time, order_status, extra_info, is_deleted, create_time, update_time
         from
             tb_newbee_mall_order
         where
-            user_id = #{userId} and order_status = #{status} and order_no = #{orderNo}
+            user_id = #{userId} and order_no = #{orderNo}
     </select>
 
 </mapper>
